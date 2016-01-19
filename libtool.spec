@@ -4,7 +4,7 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 15
+Release  : 16
 URL      : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
 Summary  : No detailed summary available
@@ -43,6 +43,7 @@ Group: Development
 Requires: libtool-lib
 Requires: libtool-bin
 Requires: libtool-data
+Provides: libtool-devel
 
 %description dev
 dev components for the libtool package.
@@ -75,7 +76,7 @@ make V=1  %{?_smp_mflags}
 %check
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=intel.com,localhost
+export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
