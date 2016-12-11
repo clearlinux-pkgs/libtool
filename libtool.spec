@@ -4,7 +4,7 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 18
+Release  : 19
 URL      : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
 Summary  : No detailed summary available
@@ -70,10 +70,12 @@ lib components for the libtool package.
 %setup -q -n libtool-2.4.6
 
 %build
+export LANG=C
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
 %check
+export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost
@@ -143,7 +145,7 @@ rm -rf %{buildroot}
 /usr/include/libltdl/lt_dlloader.h
 /usr/include/libltdl/lt_error.h
 /usr/include/libltdl/lt_system.h
-/usr/lib64/*.so
+/usr/lib64/libltdl.so
 /usr/share/aclocal/*.m4
 
 %files doc
@@ -153,4 +155,5 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/libltdl.so.7
+/usr/lib64/libltdl.so.7.3.1
