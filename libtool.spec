@@ -4,7 +4,7 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 19
+Release  : 20
 URL      : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
 Summary  : No detailed summary available
@@ -14,6 +14,11 @@ Requires: libtool-bin
 Requires: libtool-lib
 Requires: libtool-data
 Requires: libtool-doc
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 
 %description
 This is an alpha testing release of [GNU Libtool][libtool], a generic
@@ -49,6 +54,17 @@ Provides: libtool-devel
 dev components for the libtool package.
 
 
+%package dev32
+Summary: dev32 components for the libtool package.
+Group: Default
+Requires: libtool-lib32
+Requires: libtool-bin
+Requires: libtool-data
+
+%description dev32
+dev32 components for the libtool package.
+
+
 %package doc
 Summary: doc components for the libtool package.
 Group: Documentation
@@ -66,14 +82,33 @@ Requires: libtool-data
 lib components for the libtool package.
 
 
+%package lib32
+Summary: lib32 components for the libtool package.
+Group: Default
+Requires: libtool-data
+
+%description lib32
+lib32 components for the libtool package.
+
+
 %prep
 %setup -q -n libtool-2.4.6
+pushd ..
+cp -a libtool-2.4.6 build32
+popd
 
 %build
 export LANG=C
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
+pushd ../build32/
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+export LDFLAGS="$LDFLAGS -m32"
+%configure --disable-static   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make V=1  %{?_smp_mflags}
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -83,6 +118,15 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do mv $i 32$i ; done
+popd
+fi
+popd
 %make_install
 
 %files
@@ -148,6 +192,10 @@ rm -rf %{buildroot}
 /usr/lib64/libltdl.so
 /usr/share/aclocal/*.m4
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libltdl.so
+
 %files doc
 %defattr(-,root,root,-)
 %doc /usr/share/info/*
@@ -157,3 +205,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/lib64/libltdl.so.7
 /usr/lib64/libltdl.so.7.3.1
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libltdl.so.7
+/usr/lib32/libltdl.so.7.3.1
