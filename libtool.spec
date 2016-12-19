@@ -4,9 +4,9 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 20
-URL      : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
-Source0  : http://mirror.team-cymru.org/gnu/libtool/libtool-2.4.6.tar.xz
+Release  : 21
+URL      : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
+Source0  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.3 GFDL-1.3+ GPL-2.0 GPL-2.0+ LGPL-2.0+ LGPL-2.1
@@ -60,6 +60,7 @@ Group: Default
 Requires: libtool-lib32
 Requires: libtool-bin
 Requires: libtool-data
+Requires: libtool-dev
 
 %description dev32
 dev32 components for the libtool package.
@@ -103,6 +104,7 @@ export LANG=C
 make V=1  %{?_smp_mflags}
 
 pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
@@ -123,7 +125,7 @@ pushd ../build32/
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do mv $i 32$i ; done
+for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
