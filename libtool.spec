@@ -4,7 +4,7 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 21
+Release  : 22
 URL      : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Summary  : No detailed summary available
