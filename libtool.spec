@@ -9,7 +9,7 @@ Version  : 2.4.6
 Release  : 27
 URL      : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
-Source1 : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz.asc
+Source1 : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.3+ GPL-2.0 GPL-2.0+ LGPL-2.0+ LGPL-2.1
