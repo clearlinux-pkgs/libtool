@@ -6,7 +6,7 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 27
+Release  : 28
 URL      : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source1 : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz.sig
@@ -15,6 +15,7 @@ Group    : Development/Tools
 License  : GFDL-1.3+ GPL-2.0 GPL-2.0+ LGPL-2.0+ LGPL-2.1
 Requires: libtool-bin = %{version}-%{release}
 Requires: libtool-data = %{version}-%{release}
+Requires: libtool-info = %{version}-%{release}
 Requires: libtool-lib = %{version}-%{release}
 Requires: libtool-license = %{version}-%{release}
 Requires: libtool-man = %{version}-%{release}
@@ -74,13 +75,12 @@ Requires: libtool-dev = %{version}-%{release}
 dev32 components for the libtool package.
 
 
-%package doc
-Summary: doc components for the libtool package.
-Group: Documentation
-Requires: libtool-man = %{version}-%{release}
+%package info
+Summary: info components for the libtool package.
+Group: Default
 
-%description doc
-doc components for the libtool package.
+%description info
+info components for the libtool package.
 
 
 %package lib
@@ -121,6 +121,7 @@ man components for the libtool package.
 
 %prep
 %setup -q -n libtool-2.4.6
+cd %{_builddir}/libtool-2.4.6
 %patch1 -p1
 pushd ..
 cp -a libtool-2.4.6 build32
@@ -131,7 +132,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569539014
+export SOURCE_DATE_EPOCH=1573776503
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -162,11 +163,11 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1569539014
+export SOURCE_DATE_EPOCH=1573776503
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtool
-cp COPYING %{buildroot}/usr/share/package-licenses/libtool/COPYING
-cp libltdl/COPYING.LIB %{buildroot}/usr/share/package-licenses/libtool/libltdl_COPYING.LIB
+cp %{_builddir}/libtool-2.4.6/COPYING %{buildroot}/usr/share/package-licenses/libtool/4cc77b90af91e615a64ae04893fdffa7939db84c
+cp %{_builddir}/libtool-2.4.6/libltdl/COPYING.LIB %{buildroot}/usr/share/package-licenses/libtool/01a6b4bf79aca9b556822601186afab86e8c4fbf
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -245,9 +246,11 @@ popd
 %defattr(-,root,root,-)
 /usr/lib32/libltdl.so
 
-%files doc
+%files info
 %defattr(0644,root,root,0755)
-%doc /usr/share/info/*
+/usr/share/info/libtool.info
+/usr/share/info/libtool.info-1
+/usr/share/info/libtool.info-2
 
 %files lib
 %defattr(-,root,root,-)
@@ -261,8 +264,8 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/libtool/COPYING
-/usr/share/package-licenses/libtool/libltdl_COPYING.LIB
+/usr/share/package-licenses/libtool/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/libtool/4cc77b90af91e615a64ae04893fdffa7939db84c
 
 %files man
 %defattr(0644,root,root,0755)
