@@ -6,7 +6,7 @@
 #
 Name     : libtool
 Version  : 2.4.6
-Release  : 29
+Release  : 30
 URL      : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source0  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz
 Source1  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.6.tar.xz.sig
@@ -25,7 +25,6 @@ BuildRequires : gcc-libstdc++32
 BuildRequires : gfortran
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
-Patch1: avx2.patch
 
 %description
 This is an alpha testing release of [GNU Libtool][libtool], a generic
@@ -122,7 +121,6 @@ man components for the libtool package.
 %prep
 %setup -q -n libtool-2.4.6
 cd %{_builddir}/libtool-2.4.6
-%patch1 -p1
 pushd ..
 cp -a libtool-2.4.6 build32
 popd
@@ -132,20 +130,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605253533
+export SOURCE_DATE_EPOCH=1646928425
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -153,17 +151,8 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
-%check
-export LANG=C.UTF-8
-export http_proxy=http://127.0.0.1:9/
-export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost,127.0.0.1,0.0.0.0
-make %{?_smp_mflags} check || :
-cd ../build32;
-make %{?_smp_mflags} check || : || :
-
 %install
-export SOURCE_DATE_EPOCH=1605253533
+export SOURCE_DATE_EPOCH=1646928425
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtool
 cp %{_builddir}/libtool-2.4.6/COPYING %{buildroot}/usr/share/package-licenses/libtool/4cc77b90af91e615a64ae04893fdffa7939db84c
@@ -173,6 +162,12 @@ pushd ../build32/
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
