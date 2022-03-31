@@ -69,6 +69,7 @@ Configure miss: mach-o/dyld.h
 Configure miss: sys/dl.h
 Configure miss: sys/dl.h
 Configure miss: whether a statically linked program can dlopen itself
+Configure miss: whether a statically linked program can dlopen itself
 Configure miss: whether the compiler is clang
 Configure miss: whether the compiler is clang
 Configure miss: windres

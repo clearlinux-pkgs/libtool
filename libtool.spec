@@ -6,7 +6,7 @@
 #
 Name     : libtool
 Version  : 2.4.7
-Release  : 31
+Release  : 32
 URL      : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.7.tar.xz
 Source0  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.7.tar.xz
 Source1  : https://mirrors.kernel.org/gnu/libtool/libtool-2.4.7.tar.xz.sig
@@ -25,6 +25,7 @@ BuildRequires : gcc-libstdc++32
 BuildRequires : gfortran
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
+BuildRequires : glibc-staticdev
 
 %description
 GNU Libtool is a generic library support script that hides the complexity of
@@ -131,7 +132,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1647560334
+export SOURCE_DATE_EPOCH=1648753234
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -140,7 +141,7 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
 export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
-%configure --disable-static
+%configure --disable-static --enable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
@@ -149,7 +150,7 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+%configure --disable-static --enable-static   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %check
@@ -162,7 +163,7 @@ cd ../build32;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1647560334
+export SOURCE_DATE_EPOCH=1648753234
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtool
 cp %{_builddir}/libtool-2.4.7/COPYING %{buildroot}/usr/share/package-licenses/libtool/4cc77b90af91e615a64ae04893fdffa7939db84c
@@ -183,6 +184,9 @@ popd
 fi
 popd
 %make_install
+## Remove excluded files
+rm -f %{buildroot}*/usr/lib64/libltdl.a
+rm -f %{buildroot}*/usr/lib32/libltdl.a
 
 %files
 %defattr(-,root,root,-)

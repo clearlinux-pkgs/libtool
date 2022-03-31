@@ -1,0 +1,4 @@
+# This is to enable libtool to support building of object files appropriate for
+# static libraries. We don't want to ship libltdl.a though, so the `keepstatic`
+# option is still turned off.
+--enable-static
