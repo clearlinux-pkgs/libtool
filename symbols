@@ -61,6 +61,4 @@ libltdl.so.7:lt_dlpreload_open
 libltdl.so.7:lt_dlseterror
 libltdl.so.7:lt_dlsetsearchpath
 libltdl.so.7:lt_dlsym
-libltdl.so.7:lt_strlcat
-libltdl.so.7:lt_strlcpy
 libltdl.so.7:preopen_LTX_get_vtable
